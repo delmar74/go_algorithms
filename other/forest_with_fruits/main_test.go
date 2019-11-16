@@ -2,7 +2,7 @@ package main
 
 import "testing"
 
-func TestName(t *testing.T) {
+func testGenerateLongestSequence(t *testing.T) {
 
 	tree := []int{2, 4, 4, 4, 2, 3, 2, 1, 1, 1, 2, 1, 2, 3, 4, 3, 2, 1}
 	seq := 7

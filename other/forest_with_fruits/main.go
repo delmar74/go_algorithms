@@ -4,39 +4,55 @@ import (
 	"fmt"
 )
 
-func generateLongestSequence(tree []int) (int, int) {
-	pre := 0
+func generateLongestSequence(tree []int) int {
+	pre := -1
 	count := 1
-	max := 1 // local maximum
+
+	max := 0 // local maximum
 	seq := 1 // [result] max sequence
-	pos := 0 // [result] finding position
+	//pos := 0 // [result] finding position
 
-	for j := 0; j <= len(tree)-2; j++ {
-		if tree[j] == tree[j+1] {
+	if len(tree) < 3 {
+		return len(tree)
+	}
+	for i := 0; i <= len(tree)-2; i++ {
+
+		if tree[i] == tree[i+1] {
 			count++
+			if seq < max+count {
+				seq = max + count
+			}
 		} else {
-			max = max + count
 
-			if seq < max {
-				seq = max
-				pos = j - max + 1
+			if i == len(tree)-2 && (pre == -1 || pre == tree[i+1]) {
+				if seq < max+count+1 {
+					seq = max + count + 1
+				}
+			} else if seq < max+count {
+				seq = max + count
 			}
 
-			if pre != tree[j+1] {
+			if pre == -1 || pre == tree[i+1] {
+				max = max + count
+			} else {
 				max = count
 			}
 
 			count = 1
-			pre = tree[j]
+			pre = tree[i]
 		}
+
+		//pos = i - max + 2
 	}
-	return seq, pos
+	return seq
 }
 
 func main() {
-	tree := []int{2, 4, 4, 2, 2, 4, 2, 4, 4, 2, 3, 2, 1, 1, 1, 2, 1, 2, 3, 4, 3, 2, 1}
-	seq, pos := generateLongestSequence(tree)
+
+	tree := []int{4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 4, 4, 2, 2, 4, 2, 4, 4, 2, 3, 2, 1, 1, 1, 2, 1, 2, 3, 4, 3, 2, 1}
+
+	seq := generateLongestSequence(tree)
 
 	fmt.Println(tree)
-	fmt.Println("seq = ", seq, ", pos = ", pos)
+	fmt.Println("seq = ", seq)
 }
